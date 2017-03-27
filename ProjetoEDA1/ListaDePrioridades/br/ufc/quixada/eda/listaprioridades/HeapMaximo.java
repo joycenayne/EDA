@@ -18,7 +18,7 @@ public class HeapMaximo {
 	}
 	
 	private void subir(int i){
-		int j = (i - 1) / 2;
+		int j = (i - 1)/2;
 		
 		if(j >= 0){
 			if(vetor[i] > vetor[j]){
@@ -32,7 +32,7 @@ public class HeapMaximo {
 	}
 	
 	private void descer(int i){
-		int j = 2 * (i + 1);
+		int j = 2*(i + 1);
 		
 		if(j <= n){
 			j--;
@@ -49,7 +49,7 @@ public class HeapMaximo {
 		}
 	}
 	
-	public void contruir(List<Integer> entrada){
+	public void construir(List<Integer> entrada){
 		for(int i = 0; i < entrada.size(); i++){
 			vetor[i] = entrada.get(i);
 		}
@@ -90,6 +90,7 @@ public class HeapMaximo {
 		for(int i = 0; i < n; i++){
 			if(vetor[i] == prioridade){
 				vetor[i] = novaPrioridade;
+				
 				if(novaPrioridade > prioridade){
 					subir(i);
 				}

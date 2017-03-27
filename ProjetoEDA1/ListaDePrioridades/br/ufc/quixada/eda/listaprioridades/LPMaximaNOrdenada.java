@@ -3,7 +3,7 @@ package br.ufc.quixada.eda.listaprioridades;
 import java.util.List;
 
 /**
- * Implementa a lista de prioridade usando vetor não ordenado.
+ * Implementa a lista de prioridade usando vetor nï¿½o ordenado.
  * @author fabio
  *
  */
@@ -17,7 +17,7 @@ public class LPMaximaNOrdenada {
 		vetor = new int[Nmaximo];
 	}
 	
-	public void contruir(List<Integer> entrada){
+	public void construir(List<Integer> entrada){
 		for (int i = 0; i < entrada.size(); i++) {
 			vetor[i] = entrada.get(i);
 		}

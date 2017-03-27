@@ -23,7 +23,7 @@ public class TesteListaPrioridadesOrdenado {
 				
 				long tempoInicial = System.currentTimeMillis();				
 				LPMaximaOrdenada listaPrioridade = new LPMaximaOrdenada(2*entrada.size());
-				listaPrioridade.contruir(entrada);							
+				listaPrioridade.construir(entrada);							
 			
 				for (Operacao operacao : operacoes) {
 					if(operacao.getId().equals("I")){
@@ -40,7 +40,7 @@ public class TesteListaPrioridadesOrdenado {
 				
 				tempoInicial = System.currentTimeMillis();				
 				listaPrioridade = new LPMaximaOrdenada(2*entrada.size());
-				listaPrioridade.contruir(entrada);							
+				listaPrioridade.construir(entrada);							
 			
 				for (Operacao operacao : operacoes) {
 					if(operacao.getId().equals("A")){
@@ -57,7 +57,7 @@ public class TesteListaPrioridadesOrdenado {
 				
 				tempoInicial = System.currentTimeMillis();				
 				listaPrioridade = new LPMaximaOrdenada(2*entrada.size());
-				listaPrioridade.contruir(entrada);							
+				listaPrioridade.construir(entrada);							
 			
 				for (Operacao operacao : operacoes) {
 					if(operacao.getId().equals("R")){
@@ -74,7 +74,7 @@ public class TesteListaPrioridadesOrdenado {
 				
 				tempoInicial = System.currentTimeMillis();				
 				listaPrioridade = new LPMaximaOrdenada(2*entrada.size());
-				listaPrioridade.contruir(entrada);							
+				listaPrioridade.construir(entrada);							
 			
 				for (Operacao operacao : operacoes) {
 					if(operacao.getId().equals("S")){

@@ -19,7 +19,7 @@ public class LPMaximaOrdenada {
 		vetor = new int[Nmaximo];
 	}
 	
-	public void contruir(List<Integer> entrada){
+	public void construir(List<Integer> entrada){
 		for (int i = 0; i < entrada.size(); i++) {
 			vetor[i] = entrada.get(i);
 		}
