@@ -13,6 +13,7 @@ public class Dijkstra {
 	private int antecessor[] = null;
 	private double custo[] = null;
 	
+	
 	public void Execucao(Grafo grafo, int origem){
 		
 		List<Integer> vertices =  new ArrayList<>();

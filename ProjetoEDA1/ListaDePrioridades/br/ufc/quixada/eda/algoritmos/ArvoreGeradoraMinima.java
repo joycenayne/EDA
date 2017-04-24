@@ -8,6 +8,7 @@ import br.ufc.quixada.eda.grafo.Aresta;
 import br.ufc.quixada.eda.grafo.Grafo;
 
 public class ArvoreGeradoraMinima {
+
 	public List<Aresta> kruskal(Grafo g){
 		List<Aresta> solucao = new ArrayList<Aresta>();
 		ConjuntosDisjuntos conj = new ConjuntosDisjuntos(g.getQtdVertice());

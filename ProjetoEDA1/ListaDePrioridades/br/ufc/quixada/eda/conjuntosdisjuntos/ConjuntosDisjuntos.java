@@ -1,6 +1,7 @@
 package br.ufc.quixada.eda.conjuntosdisjuntos;
 
 public class ConjuntosDisjuntos {
+	
 	private int pai[] = null;
 	private int ordem[] = null;
 	private int n = 0;
