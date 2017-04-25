@@ -13,28 +13,24 @@ public class TesteDijkstra {
 	
 	public static void main(String[] args) {
 		try {
-			for (int tamanho : CriarInstancia.tamanhoInstancias) {				
-				String path = EDAConstants.caminhoPasta + "tarefa" + tamanho + ".txt";
-				List<Integer> entrada = EDAUtil.getDadosIniciais(path);
+			for(int tamanho : CriarInstancia.tamanhoInstancias){
+				for(int i = 0; i < 4; i++){
+					String path = EDAConstants.grafoDijkstra + "tb8ch" + tamanho + "_" + ".txt";
+					
+					Grafo entrada = EDAUtil.lerGrafo(path);
+					
+					long tempoInicial = System.currentTimeMillis();
+					Dijkstra grafo = new Dijkstra();
+					System.out.println("\n" + "tb8ch" + tamanho + "_" + i + ":");
+					grafo.execucao(entrada);
 				
-				String arquivoOperacao = "operacoesI_" + tamanho;
-				path = EDAConstants.caminhoPasta + arquivoOperacao + ".txt";
-				List<Operacao> operacoes = EDAUtil.getOperacoes(path);
-				
-				long tempoInicial = System.currentTimeMillis();				
-				LPMaximaOrdenada listaPrioridade = new LPMaximaOrdenada(2*entrada.size());
-				listaPrioridade.construir(entrada);							
-			
-				for (Operacao operacao : operacoes) {
-					if(operacao.getId().equals("I")){
-						listaPrioridade.inserir(operacao.getValor());
-					}
-				}	
-				long tempo = System.currentTimeMillis() - tempoInicial;			  
-				System.out.println(arquivoOperacao + ": " + tempo);
+					long tempo = System.currentTimeMillis() - tempoInicial;
+					System.out.println("Tempo: " + tempo + ".");
+				}
 			}
 		}catch (IOException e) {
 		e.printStackTrace();
 		}
 	}
 }
+

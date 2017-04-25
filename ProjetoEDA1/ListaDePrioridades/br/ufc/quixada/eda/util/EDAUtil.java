@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import br.ufc.quixada.eda.grafo.*;
+
 public class EDAUtil {
 	/**
-	 * Ler o arquivo que contém as prioridades iniciais da lista de prioridades.
+	 * Ler o arquivo que contï¿½m as prioridades iniciais da lista de prioridades.
 	 * @param path
 	 * @return
 	 * @throws IOException
@@ -24,7 +26,7 @@ public class EDAUtil {
     }
     
     /**
-     * Ler as operações que serão realizadas na lista de prioridades após a sua criação.
+     * Ler as operaï¿½ï¿½es que serï¿½o realizadas na lista de prioridades apï¿½s a sua criaï¿½ï¿½o.
      * @param path
      * @return
      * @throws IOException
@@ -37,5 +39,26 @@ public class EDAUtil {
 			
 		scanner.close();
         return operacoes;
-    }    
+    }
+
+	public static Grafo lerGrafo(String path) {
+		Grafo g = null;
+    	Scanner scanner = new Scanner(new FileReader(path)).useDelimiter(" |\r\n");
+    	
+    	if(scanner.hasNext()){
+    		g = new Grafo(scanner.nextInt(), scanner.nextInt());
+    		int pos = 0;
+    		while(scanner.hasNext()){
+    			//Aresta a = new Aresta(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+    			//g.add(a);
+    			Aresta b = new Aresta(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+    			if(pos <= g.getArestas().length){
+    				g.getArestas()[pos] = b;
+    			}
+    			pos++;
+    		}
+    	}
+		return null;
+	}
 }
+

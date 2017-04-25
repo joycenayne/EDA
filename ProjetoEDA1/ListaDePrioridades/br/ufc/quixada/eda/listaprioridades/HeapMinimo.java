@@ -1,6 +1,5 @@
 package br.ufc.quixada.eda.listaprioridades;
 
-import java.util.List;
 
 /**
  * Implementa a lista de prioridade usando Heap Maximo.
@@ -65,16 +64,16 @@ public class HeapMinimo {
 	 * Constroe as duas listas passadas por parâmetro 
 	 * atribuindo a característica de Heap Mínimo. 
 	 */
-	public void construir(List<Integer> entrada){
+	public void construir(int entrada[]){
 		//Preenche o heap.
-		for(int i = 0; i < entrada.size(); i++){
-			vetor[i] = entrada.get(i);
+		for(int i = 0; i < entrada.length; i++){
+			vetor[i] = entrada[i];
 		}
 		//Preenche o vetor de IDs.
-		for(int k = 0; k < entrada.size(); k++){
-			ID[k] = entrada.get(k);
+		for(int k = 0; k < entrada.length; k++){
+			ID[k] = entrada[k];
 		}
-		n = entrada.size();
+		n = entrada.length;
 		
 		for(int j = n/2; j >= 0; j--){
 			descer(j);

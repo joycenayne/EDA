@@ -12,14 +12,14 @@ public class TesteListaPrioridadeHeapMinimo {
 		// TODO Auto-generated method stub
 		
 		HeapMinimo heapMin = new HeapMinimo(50);
-		List<Integer> lista = new ArrayList<>();
+		int lista[] = new int[50];
 		List<Integer> IDs = new ArrayList<>();
 		
 		
 		Random numAleatorios = new Random(19700621);
 		
 		for(int i = 1; i <= 10; i++){
-			lista.add(numAleatorios.nextInt(51));
+			lista[i] = (numAleatorios.nextInt(51));
 		}
 		for(int j = 1; j <= 10; j++){
 			IDs.add(j);
