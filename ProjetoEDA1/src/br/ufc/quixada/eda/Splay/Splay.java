@@ -61,6 +61,14 @@ public class Splay<Chave extends Comparable<Chave>, G> {
 			return null;
 	} 
 	
+	public void remover(Chave chave){
+		this.raiz = splay(this.raiz, chave);
+		if(this.raiz == null || this.raiz.getChave() != chave) return;
+		No<Chave, G> aux = splay(this.raiz.getEsq(), chave);
+		if(raiz.getDir() != null && aux != null) aux.setDir(raiz.getDir());
+		raiz = aux;
+	}
+	
 	private void mostraArvore(No<Chave, G> n, String s) {
 		if(n != null && (n.getEsq() != null || n.getDir() != null))
 			mostraArvore(n.getDir(), s + "r");

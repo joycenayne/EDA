@@ -1,11 +1,13 @@
 package br.ufc.quixada.eda.AVL;
 
-public class NoAVL<G> {
-	private NoAVL<G> esq, dir;
-	private int altura, chave;
+public class NoAVL<Chave, G> {
+	
+	private NoAVL<Chave, G> esq, dir;
+	private int altura; 
+	private Chave chave;
 	private G object;
 	
-	public NoAVL(int chave, G object){
+	public NoAVL(Chave chave, G object){
 		esq = null;
 		dir = null;
 		altura = 1;
@@ -21,19 +23,19 @@ public class NoAVL<G> {
 		this.object = object;
 	}
 
-	public NoAVL<G> getEsq() {
+	public NoAVL<Chave, G> getEsq() {
 		return esq;
 	}
 
-	public void setEsq(NoAVL<G> esq) {
+	public void setEsq(NoAVL<Chave, G> esq) {
 		this.esq = esq;
 	}
 
-	public NoAVL<G> getDir() {
+	public NoAVL<Chave, G> getDir() {
 		return dir;
 	}
 
-	public void setDir(NoAVL<G> dir) {
+	public void setDir(NoAVL<Chave, G> dir) {
 		this.dir = dir;
 	}
 
@@ -45,11 +47,11 @@ public class NoAVL<G> {
 		this.altura = altura;
 	}
 
-	public int getChave() {
+	public Chave getChave() {
 		return chave;
 	}
 
-	public void setChave(int chave) {
+	public void setChave(Chave chave) {
 		this.chave = chave;
 	}
 }
