@@ -1,26 +1,24 @@
 package rubroNegra;
 
 public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
-
-	    private static final boolean VERMELHO   = true;
-	    private static final boolean PRETO = false;	
-	    private NodeRubroNegra raiz;
-	    
-	    private class NodeRubroNegra {
-	        public Chave chave;
-	        public G info;
-	        public NodeRubroNegra esq, dir, pai;
-	        public boolean cor;
-
-	        public NodeRubroNegra(Chave chave, G info, boolean cor) {
+	
+	private static final boolean VERMELHO   = true;
+    private static final boolean PRETO = false;	
+    private No raiz;
+    private class No {
+    	public Chave chave;
+	    public G info;
+        public No esq, dir, pai;
+        public boolean cor;
+        	
+        	public No(Chave chave, G info, boolean cor) {
 	            this.chave   = chave;
 	            this.info = info;
 	            this.cor = cor;
 	        }
 	    }
-	    
-	    
-	    private boolean isPreto(NodeRubroNegra no) {
+    
+	    private boolean isPreto(No no) {
 	         if (no == null) return true;
 	         return (no.cor == PRETO);
 	    }
@@ -32,7 +30,7 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    }
 	       
 	    
-	    private G busca(NodeRubroNegra raiz, Chave chave){
+	    private G busca(No raiz, Chave chave){
 	    	 if(raiz == null) return null;
 	    	
 	    	 int cmp = chave.compareTo(raiz.chave);
@@ -41,25 +39,29 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    	 else return raiz.info;
 	    }    
 	    
-	 
-	    private NodeRubroNegra noInserido = null;
+	    
+	    private No noInserido = null;
 	    public void inserir(Chave chave, G info){
 	    	if(chave == null) throw new IllegalArgumentException("Chave deve ser diferente de null.");
-	    	noInserido = null;
+
+	    	noInserido = null;//Seta em null.
 	    	raiz = inserir(raiz, chave, info);
+	    	
+	    	//Caso realmente foi inserido, realizar a reorganização.
 	    	if(noInserido != null) reorganizarInsercao(noInserido);
 	    	raiz.cor = PRETO;
 	    	raiz.pai = null;
 	    }
 	    
-	 
-	    private NodeRubroNegra inserir(NodeRubroNegra raiz, Chave chave, G info){
+	    
+	    private No inserir(No raiz, Chave chave, G info){
 	    	 if(raiz == null){
-	    		 noInserido = new NodeRubroNegra(chave, info, VERMELHO);
+	    		 //Aqui seta o atributo noInserido para aponta para o novo no.
+	    		 noInserido = new No(chave, info, VERMELHO);
 	    		 return noInserido;
 	    	 }
-	    	 
-	    	 int cmp = chave.compareTo(raiz.chave);	   	 
+	    	
+		   	 int cmp = chave.compareTo(raiz.chave);	   	 
 		   	 if(cmp < 0){
 		   		 raiz.esq = inserir(raiz.esq, chave, info);
 		   		 raiz.esq.pai = raiz;
@@ -71,14 +73,24 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 		   	 return raiz;
 	    }  
 	    
-	  
-	    private void reorganizarInsercao(NodeRubroNegra z){
-	    	
+	    
+	    private void reorganizarInsercao(No z){
+	    	/*
+	    	 * Caso o pai do nó que foi inserido seja preto, não faz nada pois a árvore ainda 
+	    	 * é rubro negra, mesmo após a inserção.
+	    	 * Caso o pai seja vermelho, realiza a reorganização.
+	    	 */
 	    	while(!isPreto(z.pai)){
 	    		if(z.pai == z.pai.pai.esq){//Caso onde o z descendente a esquerda de seu avó.
-	    			NodeRubroNegra y = z.pai.pai.dir;//Tio do z. Posivelmente null.
+	    			No y = z.pai.pai.dir;//Tio do z. Posivelmente null.
 	    			if(!isPreto(y)){
-	    				
+	    				/*
+	    				 * Caso 1: O tio do seja vermelho. Como o pai do z é vermelho, 
+	    				 * apenas pinta o pai e o tio z de preto, e  pinta o avó de z de vermenho.
+	    				 * Faz o avó de z sendo o novo z.
+	    				 * Caso o pai do novo z seja preto, a árvore voltou a ser rubro negra,
+	    				 * caso contrário, continua a recoloração.
+	    				 */
 	    				z.pai.cor = PRETO;
 	    				y.cor = PRETO;
 	    				z.pai.pai.cor = VERMELHO;
@@ -89,21 +101,26 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    					 * Transforma para aplicar o caso 3.  
 	    					 */
 	    					z = z.pai;    					
-	    	   				NodeRubroNegra pai = z.pai;
+	    	   				No pai = z.pai;
 	        				if(pai.esq == z) pai.esq = rotacaoEsquerda(z);
 	        				else pai.dir = rotacaoEsquerda(z);  
 	    				}
-	    				
+	    				//Caso 3
+	    				/*
+	    				 * O z e seu pai é vermelho e o tio do z é preto.
+	    				 * Um rotação a direita no avó do z e alteração de cores de alguns nó.
+	    				 * Após esse caso, ele voltou a ser rubro negra e sai da iteração.
+	    				 */
 	    				z.pai.cor = PRETO;
 	    				z.pai.pai.cor = VERMELHO;
 	    				
-		   				NodeRubroNegra pai = z.pai.pai.pai;
+		   				No pai = z.pai.pai.pai;
 		   				if(pai == null) raiz = rotacaoDireita(z.pai.pai);
 		   				else if(pai.esq == z.pai.pai) pai.esq = rotacaoDireita(z.pai.pai);
 	    				else pai.dir = rotacaoDireita(z.pai.pai);          				    				
 	    			}    			
 	    		}else{//Caso onde o z descendente a direita de seu avó.
-	    			NodeRubroNegra y = z.pai.pai.esq;
+	    			No y = z.pai.pai.esq;
 	    			if(!isPreto(y)){//Caso 1
 	    				z.pai.cor = PRETO;
 	    				y.cor = PRETO;
@@ -112,7 +129,7 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    			}else{//Caso 2
 	    				if(z == z.pai.esq){
 	    					z = z.pai;    					
-	    	   				NodeRubroNegra pai = z.pai;
+	    	   				No pai = z.pai;
 	        				if(pai.esq == z) pai.esq = rotacaoDireita(z);
 	        				else pai.dir = rotacaoDireita(z);  
 	    				}	
@@ -120,7 +137,7 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    				z.pai.cor = PRETO;
 	    				z.pai.pai.cor = VERMELHO;
 	    				
-		   				NodeRubroNegra pai = z.pai.pai.pai;
+		   				No pai = z.pai.pai.pai;
 		   				if(pai == null) raiz = rotacaoEsquerda(z.pai.pai);
 		   				else if(pai.esq == z.pai.pai) pai.esq = rotacaoEsquerda(z.pai.pai);
 	    				else pai.dir = rotacaoEsquerda(z.pai.pai);          				
@@ -129,8 +146,13 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    	}
 	    }    
 	    
-	    
-	    private NodeRubroNegra noExcluido = null;
+	    /*
+	     * Esse atributo nó irá armazenar o nó que foi excluído 
+	     * no caso onde ele não tem filhos e é preto. Foi necessário pois não conseguir 
+	     * implementar a remoção desse caso específico de forma recursiva.
+	     * Nos demais casos, utilizei a recursão e não preciso utilizar esse atributo.
+	     */    
+	    private No noExcluido = null;
 	    public void remover(Chave chave){
 	    	if(chave == null) throw new IllegalArgumentException("Chave deve ser diferente de null.");
 	    	    	
@@ -142,8 +164,8 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    	if(raiz != null) raiz.cor = PRETO;
 	    }
 	    
-	 
-	    private NodeRubroNegra remover(NodeRubroNegra raiz, Chave chave, NodeRubroNegra pai){
+	    
+	    private No remover(No raiz, Chave chave, No pai){
 	   	 	 if(raiz == null) return null;
 	 	
 		   	 int cmp = chave.compareTo(raiz.chave);
@@ -164,7 +186,7 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 		   			 /*
 		   			  * Busca pelo sucessor e copia os dados do sucessor para o nó a ser excluído.
 		   			  */
-		   			 NodeRubroNegra suces = sucessor(raiz.dir);
+		   			 No suces = sucessor(raiz.dir);
 		   			 raiz.info = suces.info;
 		   			 raiz.chave = suces.chave;
 		   			 
@@ -183,25 +205,30 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 		   	 }
 		   	 return raiz;    	
 	    }  
-	    private void reorganizarRemocao(NodeRubroNegra x){
+	    private void reorganizarRemocao(No x){
 	    	if(x.pai == null){
 	    		raiz = null;
 	    		return;
 	    	}
 	    	
-	    	NodeRubroNegra noRemover = x;
+	    	/*
+	    	 * Primeiro faço toda a reorganização primeiro e só depois excluo o nó.
+	    	 * Armazeno o nó a ser removido nessa variável abaixo.
+	    	 */
+	    	No noRemover = x;
 	    	while(isPreto(x) && x != raiz){
 	    		if(x == x.pai.esq){//Caso onde x é filho a esquerdo de seu pai.
-	    			NodeRubroNegra w = x.pai.dir;//Irmão de x. Possilvemente null.
+	    			No w = x.pai.dir;//Irmão de x. Possilvemente null.
 	    			if(!isPreto(w)){//Caso 1
 	    				/*
 	    				 * W é vermelho. 
-	    				 * Altera a árvore apenas para aplicar um dos demais casos, ou seja, não torna a árvore rubro negra.
+	    				 * Altera a árvore apenas para aplicar um dos demais casos, ou seja, 
+	    				 * não torna a árvore rubro negra.
 	    				 */
 	    				w.cor = PRETO;
 	    				x.pai.cor = VERMELHO;
 	    				
-	    				NodeRubroNegra avo = x.pai.pai;
+	    				No avo = x.pai.pai;
 	    				if(avo.esq == x.pai) avo.esq = rotacaoEsquerda(x.pai);
 	    				else avo.dir = rotacaoEsquerda(x.pai);    				
 	    				w = x.pai.dir;
@@ -215,12 +242,12 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    				w.cor = VERMELHO;
 	    				x = x.pai;
 	    			}else{
-	    				if(w != null  && isPreto(w.dir)){//Caso 3
+	    				if(w != null && isPreto(w.dir)){//Caso 3
 	    					/*
 	    					 * W e seu filho direito preto e esquerdo vermelho.
 	    					 * Altera para aplicar o caso 4, ou seja, não torna a árvore rubro negra.
 	    					 */
-	    					if(w.esq != null) w.esq.cor = PRETO;
+	    					w.esq.cor = PRETO;
 	    					w.cor = VERMELHO;
 	    					x.pai.dir = rotacaoDireita(w);
 	    					w = x.pai.dir;
@@ -234,18 +261,20 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 						if(w != null) w.pai.cor = PRETO;
 						if(w != null && w.dir != null) w.dir.cor = PRETO;
 						
-	    				NodeRubroNegra avo = x.pai.pai;
-	    				if(avo.esq == x.pai) avo.esq = rotacaoEsquerda(x.pai);
-	    				else avo.dir = rotacaoEsquerda(x.pai);     					
-	    				
+	    				No avo = x.pai.pai;
+	    				if(avo != null){
+	        				if(avo.esq == x.pai) avo.esq = rotacaoEsquerda(x.pai);
+	        				else avo.dir = rotacaoEsquerda(x.pai);       					
+	    				}
+	  					    				
 	    				x = raiz;
 	    			}
 	    		}else{//Caso onde x é filho a direito de seu pai.
-	    			NodeRubroNegra w = x.pai.esq;
+	    			No w = x.pai.esq;
 	    			if(!isPreto(w)){//Caso 1
 	    				w.cor = PRETO;
 	    				x.pai.cor = VERMELHO;
-	    				NodeRubroNegra avo = x.pai.pai;
+	    				No avo = x.pai.pai;
 	    				if(avo.esq == x.pai) avo.esq = rotacaoDireita(x.pai);
 	    				else avo.dir = rotacaoDireita(x.pai);    				
 	    				w = x.pai.esq;
@@ -256,53 +285,74 @@ public class ArvoreRubroNegra<Chave extends Comparable<Chave>, G> {
 	    				x = x.pai;
 	    			}else{
 	    				if(w != null && isPreto(w.esq)){//Caso 3
-	    					if(w.esq != null) w.esq.cor = PRETO;
+	    					w.esq.cor = PRETO;
 	    					w.cor = VERMELHO;
 	    					x.pai.dir = rotacaoEsquerda(w);
 	    					w = x.pai.esq;
 	    				}
 	    				
 	    				//Caso 4
-						if(w != null && w.pai != null) w.cor = w.pai.cor;
-						if(w != null && w.pai != null)w.pai.cor = PRETO;
-						if(w != null && w.esq != null) w.esq.cor = PRETO;
+						if(w != null) w.cor = w.pai.cor;
+						if(w != null) w.pai.cor = PRETO;
+						if(w != null) w.esq.cor = PRETO;
 						
-	    				NodeRubroNegra avo = x.pai.pai;
-	    				if(avo != null && avo.esq == x.pai) avo.esq = rotacaoDireita(x.pai);
-	    				else if(avo != null) avo.dir = rotacaoDireita(x.pai);     					
-	    				
+	    				No avo = x.pai.pai;
+	    				if(avo != null){
+	        				if(avo.esq == x.pai) avo.esq = rotacaoDireita(x.pai);
+	        				else avo.dir = rotacaoDireita(x.pai);      					
+	    				}
+	   					    				
 	    				x = raiz;
 	    			}    			
 	    		}
 	    	}
+	    	/*
+	    	 * Após a reorganização, remove efetivamente o nó, atualizando o ponteiro do pai.
+	    	 */
 	    	if(noRemover == noRemover.pai.esq) noRemover.pai.esq = null;
 	    	else noRemover.pai.dir = null;    	
 	    }
 	    
-	    private NodeRubroNegra sucessor(NodeRubroNegra raiz){   	
+	    
+	    private No sucessor(No raiz){   	
 	    	if(raiz.esq != null) return sucessor(raiz.esq);
 	    	else return raiz; 
 	    }    
 	    
-	    private NodeRubroNegra rotacaoDireita(NodeRubroNegra no) {
-	        NodeRubroNegra x = no.esq;
+	    private No rotacaoDireita(No no) {
+	        No x = no.esq;
 	        if(x != null) no.esq = x.dir;
 	        if(x != null) x.dir = no;
 	   	 
-	        if(x != null)x.pai = no.pai;
+	        if(x != null) x.pai = no.pai;
 	        no.pai = x;
 	        if(no.esq != null) no.esq.pai = no;        
 	        return x;
 	    }
 
-	    private NodeRubroNegra rotacaoEsquerda(NodeRubroNegra no) {
-	        NodeRubroNegra x = no.dir;
+	    private No rotacaoEsquerda(No no) {
+	        No x = no.dir;
 	        if(x != null) no.dir = x.esq;
 	        if(x != null) x.esq = no;
 	   	 	
-	        if(no != null && x != null) x.pai = no.pai;
+	        if(x != null) x.pai = no.pai;
 	        no.pai = x;
 	        if(no.dir != null) no.dir.pai = no;
 	        return x;
 	    }    
+	    
+	    
+	    
+	    public void imprimirEmOrdem(){
+	    	imprimirEmOrdem(raiz);
+	    }
+	    
+	    private void imprimirEmOrdem(No raiz){
+	    	if(raiz != null){
+	    		System.out.print(" (" + raiz.chave + ", " + raiz.cor + ")");
+	    		imprimirEmOrdem(raiz.esq);
+	    		imprimirEmOrdem(raiz.dir);
+	    	}
+	    }      
+	       
 }

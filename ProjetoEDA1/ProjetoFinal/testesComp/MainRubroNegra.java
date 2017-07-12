@@ -34,17 +34,17 @@ public class MainRubroNegra {
 			tempo = System.currentTimeMillis() - tempoInicial;
 			System.out.println("Tempo para Busca aleatória dos 30% é de: " + tempo + " milissengundos");
 			
-			//Remoção dos 30% das instancias
+			/** //Remoção dos 30% das instancias
 			tempoInicial = System.currentTimeMillis();
 			for(int i = 6000; i < 9000; i++){
 				rubroNegra.remover(entrada.get(i).getNome());
 			}
 			
 			tempo = System.currentTimeMillis() - tempoInicial;
-			System.out.println("Tempo para Remover aleatoriamente 30% das instâncias é de: " + tempo + " milissengundos");
+			System.out.println("Tempo para Remover aleatoriamente 30% das instâncias é de: " + tempo + " milissengundos");**/
 			
 			
-			// As Três Operações Conjuntamente 			
+			/** // As Três Operações Conjuntamente 			
 			
 			tempoInicial = System.currentTimeMillis();
 			ArvoreRubroNegra<String, Empresa> rubroNegra2 = new ArvoreRubroNegra<>();
@@ -125,11 +125,12 @@ public class MainRubroNegra {
 			}
 						
 			tempo = System.currentTimeMillis() - tempoInicial;
-			System.out.println("Tempo para Operações Conjuntas: " + tempo + " milissegundos");
+			System.out.println("Tempo para Operações Conjuntas: " + tempo + " milissegundos");**/
 		
 		}catch (IOException e) {
 			e.printStackTrace();
 			
 		}
+		
 	}
 }
